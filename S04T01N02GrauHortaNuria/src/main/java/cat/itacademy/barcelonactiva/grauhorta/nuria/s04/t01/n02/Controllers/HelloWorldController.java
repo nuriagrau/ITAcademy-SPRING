@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.cognoms.nom.s04.t01.n02.Controllers;
+package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t01.n02.Controllers;
 
 import org.springframework.web.bind.annotation.*;
 

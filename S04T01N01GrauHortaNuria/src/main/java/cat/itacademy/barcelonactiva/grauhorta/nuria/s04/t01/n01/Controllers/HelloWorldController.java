@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t01.n01.S04T01N01GrauHortaNuria.Controllers;
+package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t01.n01.Controllers;
 
 
 import org.springframework.boot.context.properties.bind.DefaultValue;

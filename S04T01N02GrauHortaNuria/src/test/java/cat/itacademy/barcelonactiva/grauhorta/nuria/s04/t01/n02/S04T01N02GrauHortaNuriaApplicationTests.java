@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.cognoms.nom.s04.t01.n02;
+package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t01.n02;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

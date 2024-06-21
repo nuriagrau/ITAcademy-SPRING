@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t01.n01.S04T01N01GrauHortaNuria;
+package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t01.n01;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
