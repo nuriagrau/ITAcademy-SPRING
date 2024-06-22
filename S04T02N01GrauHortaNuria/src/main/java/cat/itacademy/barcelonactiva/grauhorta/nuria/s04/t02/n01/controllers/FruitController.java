@@ -1,11 +1,11 @@
 package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t02.n01.controllers;
 
 
-import cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t02.n01.model.Fruit;
+import cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t02.n01.entity.Fruit;
 import cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t02.n01.model.repository.FruitRepository;
+import cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t02.n01.model.services.FruitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +19,15 @@ import java.util.Optional;
 public class FruitController {
 
     @Autowired
-    private FruitRepository fruitRepository;
+    private FruitService fruitService;
 
 
     //http://localhost:8080/fruita/add
     @PostMapping("/add")
     public ResponseEntity<Fruit> createFruit(@RequestBody Fruit fruit) {
         try {
-            Fruit _fruit = fruitRepository
-                    .save(new Fruit(fruit.getName(), fruit.getQuantityKg()));
-            return new ResponseEntity<>(_fruit, HttpStatus.CREATED);
+            Fruit addedFruit = fruitService.savefruit(fruit);
+            return new ResponseEntity<>(addedFruit, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -37,22 +36,20 @@ public class FruitController {
     //http://localhost:8080/fruita/update
     @PutMapping("/update")
     public ResponseEntity<Fruit> updateFruit(@RequestBody Fruit fruit) {
-        Optional<Fruit> fruitData = fruitRepository.findById(fruit.getId());
-        if (!fruitData.isEmpty()) {
-            Fruit _fruit = fruitData.get();
-            _fruit.setName(fruit.getName());
-            _fruit.setQuantityKg(fruit.getQuantityKg());
-            return new ResponseEntity<>(fruitRepository.save(_fruit), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            Fruit updatedFruit = fruitService.updateFruit(fruit, fruit.getId());
+            return new ResponseEntity<>(updatedFruit, HttpStatus.OK);
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>(fruit, HttpStatus.NOT_FOUND);
         }
+
     }
 
     //http://localhost:8080/fruita/delete/{id}
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteFruit(@PathVariable int id) {
+    public ResponseEntity<HttpStatus> deleteFruitById(@PathVariable("id") Long id) {
         try {
-            fruitRepository.deleteById(id);
+            fruitService.deleteFruitById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (Exception e){
@@ -62,10 +59,9 @@ public class FruitController {
 
     //http://localhost:8080/fruita/getOne/{id}
 
-    @GetMapping("/getOne({id}")
-    public ResponseEntity<Fruit> getFruitById(@PathVariable int id) {
-        Optional<Fruit> fruitData = fruitRepository.findById(id);
-
+    @GetMapping("/getOne/{id}")
+    public ResponseEntity<Fruit> findOneFruit(@PathVariable("id") Long id) {
+        Optional<Fruit> fruitData = fruitService.findOneFruit(id);
         if(fruitData.isPresent()) {
             return new ResponseEntity<>(fruitData.get(), HttpStatus.OK);
         } else {
@@ -75,11 +71,9 @@ public class FruitController {
 
     //http://localhost:8080/fruita/getAll
     @GetMapping("/getAll")
-    public ResponseEntity<List<Fruit>> getAllFruits() {
+    public ResponseEntity<List<Fruit>> fetchFruitList() {
         try {
-            List<Fruit> fruits = new ArrayList<Fruit>();
-            fruitRepository.findAll().forEach(fruits::add);
-
+            List<Fruit> fruits = fruitService.fetchFruitList();
             if (fruits.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }

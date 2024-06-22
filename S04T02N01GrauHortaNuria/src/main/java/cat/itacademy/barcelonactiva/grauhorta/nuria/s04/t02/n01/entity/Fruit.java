@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t02.n01.model;
+package cat.itacademy.barcelonactiva.grauhorta.nuria.s04.t02.n01.entity;
 
 import jakarta.persistence.*;
 
@@ -8,7 +8,7 @@ public class Fruit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -16,12 +16,8 @@ public class Fruit {
     @Column(name = "quantityKg")
     private int quantityKg;
 
-    public Fruit(String name, int quantityKg) {
-        this.name = name;
-        this.quantityKg = quantityKg;
-    }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
